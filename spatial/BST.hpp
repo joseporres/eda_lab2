@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 
-
+//#include "SpatialBase.h"
 
 template <typename T>
 struct BSNode {
@@ -26,7 +26,7 @@ template <typename T>
 class BSTree {
   BSNode<T>* root;
 
-  void insertpriv(BSNode<T>*& node, T data, bool (*lessThan)(T&, T&) ) {
+  void insertpriv(BSNode<T>*& node, T data, bool (*lessThan)(T, T)) {
     if (node) {
       if (lessThan(node->data, data))
         return insertpriv(node->right, data, lessThan);
@@ -46,35 +46,6 @@ class BSTree {
       displayInOrder(node->right, points);
     }
   }
-  void displayPreOrder(BSNode<T>* node) {
-    if (node) {
-      std::cout << (node->data) << "\n";
-      displayPreOrder(node->left);
-      displayPreOrder(node->right);
-    }
-  }
-  void displayPostOrder(BSNode<T>* node) {
-    if (node) {
-      displayPostOrder(node->left);
-      displayPostOrder(node->right);
-      std::cout << (node->data) << "\n";
-    }
-  }
-
-  void displayPretty(BSNode<T>* node, int level) {
-    if (node) {
-      int count = level;
-      while (count--) {
-        if (count)
-          std::cout << "│ ";
-        else
-          std::cout << "├>";
-      }
-      std::cout << "(" << node->data << ")\n";
-      displayPretty(node->left, level + 1);
-      displayPretty(node->right, level + 1);
-    }
-  }
 
  public:
   BSTree() : root(nullptr) {}
@@ -83,17 +54,14 @@ class BSTree {
     root = nullptr;
   }
 
-  void insertBST(T data, bool (*lessThan)(T&, T&)) {
+  void insertBST(T data, bool (*lessThan)(T, T)) {
     return insertpriv(root, data, lessThan);
   }
-  std::vector<T> rangeSearch(T lb, T ub, bool (*lessThan)(T&, T&)) {
+  std::vector<T> rangeSearch(T lb, T ub, bool (*lessThan)(T, T)) {
     std::vector<T> points;
     displayInOrder(root, points);
     auto itlb = std::lower_bound(points.begin(), points.end(), lb, lessThan);
     auto itub = std::upper_bound(itlb, points.end(), ub, lessThan);
     return std::vector<T>(itlb, itub);
   }
-  void displayPreOrder() { return displayPreOrder(root); }
-  void displayPostOrder() { return displayPostOrder(root); }
-  void displayPretty() { return displayPretty(root, 0); }
 };
