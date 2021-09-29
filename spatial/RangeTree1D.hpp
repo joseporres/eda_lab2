@@ -203,7 +203,7 @@ class RangeTree1D : public SpatialBase<T> {
   // El punto de referencia no necesariamente es parte del dataset
   T nearest_neighbor(const T &reference) override { return T({0}); }
   std::vector<T> range(const T &min, const T &max) override {
-    vector<T> result, temp;
+    vector<T> result;
     auto vsplit = findSplitNode(min, max);
     auto v = vsplit;
     if (!v->left) {
@@ -212,8 +212,7 @@ class RangeTree1D : public SpatialBase<T> {
       v = v->left;
       while (v->left) {
         if (min <= v->data) {
-          reportSubtree(v, temp);
-          result.insert(result.end(), temp.begin(), temp.end());
+          reportSubtree(v->right, result);
           v = v->left;
         } else {
           v = v->right;
@@ -224,8 +223,7 @@ class RangeTree1D : public SpatialBase<T> {
     v = vsplit->right;
     while (v->right) {
       if (max >= v->data) {
-        reportSubtree(v, temp);
-        result.insert(result.end(), temp.begin(), temp.end());
+        reportSubtree(v->left, result);
         v = v->right;
       } else {
         v = v->left;
