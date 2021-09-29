@@ -1,9 +1,28 @@
 #pragma once
 
+#include <vector>
+
 #include "SpatialBase.h"
 
 namespace utec {
 namespace spatial {
+
+template <typename T>
+struct NodeBT {
+  T data;
+  int height;
+  NodeBT *left;
+  NodeBT *right;
+  NodeBT() : left(nullptr), right(nullptr), height(0) {}
+  NodeBT(T value) : data(value), left(nullptr), right(nullptr), height(0) {}
+
+  void killSelf() {
+    if (left != nullptr) left->killSelf();
+    if (right != nullptr) right->killSelf();
+    delete this;
+  }
+};
+
 // auxiliar
 template <typename T>
 void mySwap(T &a, T &b) {
@@ -173,7 +192,7 @@ class RangeTree1D : public SpatialBase<T> {
     return v;
   }
 
-  void reportSubtree(NodeBT<T> *node, vector<T> &result) {
+  void reportSubtree(NodeBT<T> *node, std::vector<T> &result) {
     if (node == nullptr) return;
     reportSubtree(node->left, result);
     if (!node->left) result.push_back(node->data);
@@ -203,7 +222,7 @@ class RangeTree1D : public SpatialBase<T> {
   // El punto de referencia no necesariamente es parte del dataset
   T nearest_neighbor(const T &reference) override { return T({0}); }
   std::vector<T> range(const T &min, const T &max) override {
-    vector<T> result;
+    std::vector<T> result;
     auto vsplit = findSplitNode(min, max);
     auto v = vsplit;
     if (!v->left) {

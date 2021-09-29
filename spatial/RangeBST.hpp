@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SpatialBase.h"
-#include "node.h"
+#include <vector>
 
 namespace utec {
 namespace spatial {
