@@ -2,6 +2,7 @@
 
 #include "BST.hpp"
 #include "SpatialBase.h"
+#include "node.h"
 
 namespace utec {
 namespace spatial {
@@ -18,15 +19,16 @@ class RangeBST : public BSTree<Point> {
 
  public:
   RangeBST(){};
-  void insert(Point& new_point) { this->insertBST(new_point, comparePoint); }
+  void insert(Point &new_point) { this->insertBST(new_point, comparePoint); }
 
   // El punto de referencia no necesariamente es parte del dataset
-  Point nearest_neighbor(Point& reference) { return Point({0}); }
+  Point nearest_neighbor(Point &reference) { return Point({0}); }
 
-  std::vector<Point> range(Point& min, Point& max) {
+  std::vector<Point> range(Point &min, Point &max) {
     return this->rangeSearch(min, max, comparePoint);
   };
 };
+
 
 }  // namespace spatial
 }  // namespace utec

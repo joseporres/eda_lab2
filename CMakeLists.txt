@@ -3,6 +3,7 @@ CMAKE_POLICY(SET CMP0048 OLD)
 PROJECT(spatial_implementation)
 
 SET(CMAKE_CXX_STANDARD 17)
+set( CMAKE_CXX_FLAGS "-Wall -fsanitize=address " )
 
 # Google Benchmark and Google Test
 SET(BENCHMARK_ENABLE_TESTING OFF)

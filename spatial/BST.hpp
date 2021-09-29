@@ -1,7 +1,6 @@
 #pragma once
 
 #include <algorithm>
-#include <iostream>
 #include <vector>
 
 //#include "SpatialBase.h"
@@ -38,12 +37,12 @@ class BSTree {
     }
   }
 
-  void displayInOrder(BSNode<T>* node, std::vector<T>& points) {
+  void getInOrder(BSNode<T>* node, std::vector<T>& points) {
     if (node) {
-      displayInOrder(node->left, points);
+      getInOrder(node->left, points);
 
       points.push_back(node->data);
-      displayInOrder(node->right, points);
+      getInOrder(node->right, points);
     }
   }
 
@@ -59,9 +58,10 @@ class BSTree {
   }
   std::vector<T> rangeSearch(T lb, T ub, bool (*lessThan)(T, T)) {
     std::vector<T> points;
-    displayInOrder(root, points);
+    getInOrder(root, points);
     auto itlb = std::lower_bound(points.begin(), points.end(), lb, lessThan);
-    auto itub = std::upper_bound(itlb, points.end(), ub, lessThan);
-    return std::vector<T>(itlb, itub);
+    auto itub = std::upper_bound(points.begin(), points.end(), ub, lessThan);
+    std::vector<T> result(itlb, itub);
+    return result;
   }
 };
